@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!--<script src="js/week1.js" defer></script>-->
+
+</head>
+<body>
+    <h1 id="head1">Hello World</h1>
+
+    <button id="my-button">Print a message</button>
+
+    <ul id="list1">
+
+    </ul>
+
+    <br>
+
+    <textarea name="Text" id="text" rows="10" cols="30"
+    placeholder="What to add?"></textarea>
+
+    <br>
+
+    <button id="add-data">Add data</button>
+
+ <script>
+    const printMessageButton = document.getElementById("my-button");
+    const dataButton = document.getElementById("add-data");
+
+    printMessageButton.addEventListener("click", function() {
+        console.log("hello world");
+
+        const headerH1 = document.getElementById("head1");
+        headerH1.innerText = "Moi maailma";
+
+    })
+
+    dataButton.addEventListener("click", function() {
+
+        const listL1 = document.getElementById("list1");
+        const newData = document.createElement("li");
+    /*     const textForData = document.createTextNode("hehe"); */
+        newData.innerText = document.getElementById("text").value;
+
+    /*     newData.appendChild(textForData); */
+        listL1.appendChild(newData);
+
+    })
+ </script>
+
+</body>
+</html>

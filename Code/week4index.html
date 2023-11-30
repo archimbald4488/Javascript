@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTC-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<script src="js/week4.js" defer></script>-->
+        <!--<link rel="stylesheet" href="css/week4.css">-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <style type="text/css">
+            body {
+                background-color: #eceff1;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .show-container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .show-data {
+                width: 100%;
+                background-color: #cfd8dc;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-radius: 6px;
+                box-shadow: inset;
+            }
+
+            img {
+                display: block;
+            }
+
+            h1 {
+                text-align: center;
+            }
+
+            .show-info {
+                width: 100%;
+            }
+
+            @media (min-width: 800px) {
+                .show-data {
+                    display: flex;
+                }
+                .show-info {
+                    padding: 10px;
+                }
+            }
+
+            @media (max-width: 800px) {
+                img {
+                    margin: auto;
+                }
+                p {
+                    text-align: center;
+                    padding: 10px;
+                }
+            }
+        </style>
+
+    </head>
+    <body>
+        <nav class="navbar bg-light">
+            <div class="container-fluid">
+              <form class="d-flex" role="search">
+                <input id="input-show" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" id="submit-data">Search</button>
+              </form>
+            </div>
+          </nav>
+
+        <div class="show-container" id="important">
+
+        </div>
+
+
+    </body>
+    <script>
+        const addData = document.getElementById("submit-data");
+        const container = document.getElementById("important");
+
+        addData.addEventListener("click", function (event) {
+            event.preventDefault();
+            while (true) {
+                if (container.firstElementChild) {
+                    console.log("Children spotted!")
+                    container.removeChild(container.lastElementChild);
+                } else {
+                    break
+                }
+            }
+            const formQuery = document.getElementById("input-show").value;
+            getData(formQuery);
+
+        })
+
+        async function getData (qString) {
+            const url = "https://api.tvmaze.com/search/shows?q=" + qString;
+            const dataPromise = await fetch(url);
+            const dataJSON = await dataPromise.json();
+
+            for (let i = 0; i < dataJSON.length; i++) {
+                const newDiv = document.createElement("div");
+                newDiv.classList.add("show-data");
+
+                const newImg = document.createElement("img");
+                if (dataJSON[i].show.image) {
+                    newImg.src = dataJSON[i].show.image.medium;
+                }
+
+                const newChildDiv = document.createElement("div");
+                newChildDiv.classList.add("show-info");
+
+                const newH1 = document.createElement("h1");
+                newH1.innerText = dataJSON[i].show.name;
+
+                newChildDiv.appendChild(newH1);
+                newChildDiv.innerHTML += dataJSON[i].show.summary;
+                newDiv.appendChild(newChildDiv);
+                newDiv.appendChild(newImg);
+
+                container.appendChild(newDiv);
+            }
+        }
+    </script>
+</html>
